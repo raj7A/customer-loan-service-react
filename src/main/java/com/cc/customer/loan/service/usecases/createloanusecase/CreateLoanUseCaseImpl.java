@@ -5,6 +5,7 @@ import com.cc.customer.loan.service.entities.LoanFactory;
 import com.cc.customer.loan.service.usecases.exceptions.CustomerFraudException;
 import com.cc.customer.loan.service.usecases.exceptions.LoanSaveException;
 
+import java.util.Objects;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -33,14 +34,17 @@ public class CreateLoanUseCaseImpl implements CreateLoanUseCase {
     }
 
     private void saveLoan(Loan loan) throws LoanSaveException {
-        var isLoanSaved = loanGateway.saveLoan(loan);
-        if (!isLoanSaved)
+        var loanNumber = loanGateway.saveLoan(loan);
+        if (Objects.isNull(loanNumber.block())) {
             throw new LoanSaveException("Error occurred while saving the loan in data store");
+        } else {
+            loan.setLoanNumber(loanNumber.block());
+        }
     }
 
     private void doFraudCheck(String customerId) throws CustomerFraudException {
         var fraudCheckResponse = customerFraudCheckGateway.doCustomerFraudCheck(customerId);
-        if (fraudCheckResponse.isFraud())
+        if (fraudCheckResponse.block().isFraud())
             throw new CustomerFraudException("Customer failed the fraud check");
     }
 

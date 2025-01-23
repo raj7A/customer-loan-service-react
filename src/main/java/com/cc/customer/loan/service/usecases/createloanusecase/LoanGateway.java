@@ -1,7 +1,8 @@
 package com.cc.customer.loan.service.usecases.createloanusecase;
 
 import com.cc.customer.loan.service.entities.Loan;
+import reactor.core.publisher.Mono;
 
 public interface LoanGateway {
-    Boolean saveLoan(Loan loan);
+    Mono<Long> saveLoan(Loan loan);
 }

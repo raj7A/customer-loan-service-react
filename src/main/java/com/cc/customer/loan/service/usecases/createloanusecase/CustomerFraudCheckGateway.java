@@ -1,5 +1,7 @@
 package com.cc.customer.loan.service.usecases.createloanusecase;
 
+import reactor.core.publisher.Mono;
+
 public interface CustomerFraudCheckGateway {
-    FraudCheckResponse doCustomerFraudCheck(String customerId);
+    Mono<FraudCheckResponse> doCustomerFraudCheck(String customerId);
 }

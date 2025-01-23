@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 
@@ -40,8 +41,8 @@ public class CreateLoanUseCaseTest {
     @Test
     public void Car_loan_is_created_when_customer_passes_fraud_check() {
         var loanRequest = createLoanRequest(LoanType.CAR);
-        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(new FraudCheckResponse("123", Boolean.FALSE));
-        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Boolean.TRUE);
+        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.FALSE)));
+        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Mono.just(1l));
 
         var carLoan = createLoanUseCase.createLoan(loanRequest);
 
@@ -52,8 +53,8 @@ public class CreateLoanUseCaseTest {
     @Test
     public void Home_loan_is_created_when_customer_passes_fraud_check() {
         var loanRequest = createLoanRequest(LoanType.HOUSING);
-        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(new FraudCheckResponse("123", Boolean.FALSE));
-        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Boolean.TRUE);
+        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.FALSE)));
+        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Mono.just(1l));
 
         var homeLoan = createLoanUseCase.createLoan(loanRequest);
 
@@ -64,7 +65,7 @@ public class CreateLoanUseCaseTest {
     @Test
     public void Car_loan_is_not_created_when_customer_fails_fraud_check() {
         var loanRequest = createLoanRequest(LoanType.CAR);
-        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(new FraudCheckResponse("123", Boolean.TRUE));
+        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.TRUE)));
 
         assertThrows(CustomerFraudException.class, () -> createLoanUseCase.createLoan(loanRequest));
     }
@@ -72,8 +73,8 @@ public class CreateLoanUseCaseTest {
     @Test
     public void Car_loan_is_not_created_when_loan_is_not_saved_in_data_store() {
         var loanRequest = createLoanRequest(LoanType.CAR);
-        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(new FraudCheckResponse("123", Boolean.FALSE));
-        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Boolean.FALSE);
+        Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.FALSE)));
+        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Mono.empty());
 
         assertThrows(LoanSaveException.class, () -> createLoanUseCase.createLoan(loanRequest));
     }

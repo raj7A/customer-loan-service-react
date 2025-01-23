@@ -5,18 +5,18 @@ import com.cc.customer.loan.service.interfaceadapters.gateways.service.CustomerF
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class ServiceGatewayConfigs {
 
     @Bean
-    public CustomerFraudCheckGateway customerFraudCheckGatewayBean(RestTemplate restTemplate) {
-        return new CustomerFraudCheckGatewayImpl(restTemplate);
+    public CustomerFraudCheckGateway customerFraudCheckGatewayBean(WebClient webClient) {
+        return new CustomerFraudCheckGatewayImpl(webClient);
     }
 
     @Bean
-    public RestTemplate restTemplateBean() {
-        return new RestTemplate();
+    public WebClient createWebClient() {
+        return WebClient.builder().build();
     }
-
 }

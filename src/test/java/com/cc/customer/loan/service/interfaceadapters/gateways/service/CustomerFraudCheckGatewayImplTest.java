@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import reactor.test.StepVerifier;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,8 +43,12 @@ public class CustomerFraudCheckGatewayImplTest {
 
         var fraudCheckResponse = customerFraudCheckGateway.doCustomerFraudCheck("12345");
 
-        assertNotNull(fraudCheckResponse);
-        assertTrue(fraudCheckResponse.isFraud());
+        StepVerifier.create(fraudCheckResponse)
+                .assertNext(response -> {
+                    assertNotNull(response);
+                    assertTrue(response.isFraud());
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -55,7 +60,11 @@ public class CustomerFraudCheckGatewayImplTest {
 
         var fraudCheckResponse = customerFraudCheckGateway.doCustomerFraudCheck("12345");
 
-        assertNotNull(fraudCheckResponse);
-        assertFalse(fraudCheckResponse.isFraud());
+        StepVerifier.create(fraudCheckResponse)
+                .assertNext(response -> {
+                    assertNotNull(response);
+                    assertFalse(response.isFraud());
+                })
+                .verifyComplete();
     }
 }

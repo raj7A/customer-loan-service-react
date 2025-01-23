@@ -6,8 +6,9 @@ import com.cc.customer.loan.service.usecases.createloanusecase.LoanGateway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Objects;
 
 @SpringBootTest
 public class LoanGatewayImplTest {
@@ -21,7 +22,9 @@ public class LoanGatewayImplTest {
 
         var isLoanSaved = loanGateway.saveLoan(homeLoan);
 
-        assertTrue(isLoanSaved);
+        StepVerifier.create(isLoanSaved)
+                .expectNextMatches(Objects::nonNull)
+                .verifyComplete();
     }
 
 }

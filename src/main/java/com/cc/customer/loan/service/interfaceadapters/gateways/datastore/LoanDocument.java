@@ -1,19 +1,18 @@
 package com.cc.customer.loan.service.interfaceadapters.gateways.datastore;
 
+import com.cc.customer.loan.service.entities.Loan;
 import com.cc.customer.loan.service.entities.enums.LoanStatus;
 import com.cc.customer.loan.service.entities.enums.LoanType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 
-@Entity
 @Table(name = "Loan")
 class LoanDocument {
 
     @Id
-    private  String loanNumber;
+    private  Long loanNumber;
     private  String customerId;
     private  Integer period;
     private  Double rate;
@@ -28,11 +27,11 @@ class LoanDocument {
     public LoanDocument() {
     }
 
-    public String getLoanNumber() {
+    public Long getLoanNumber() {
         return loanNumber;
     }
 
-    public void setLoanNumber(String loanNumber) {
+    public void setLoanNumber(Long loanNumber) {
         this.loanNumber = loanNumber;
     }
 
@@ -111,4 +110,5 @@ class LoanDocument {
     public String getLoanCreatedSystem() {
         return loanCreatedSystem;
     }
+
 }

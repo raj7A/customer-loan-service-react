@@ -4,8 +4,7 @@ import com.cc.customer.loan.service.entities.Loan;
 import com.cc.customer.loan.service.usecases.createloanusecase.LoanGateway;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Objects;
+import reactor.core.publisher.Mono;
 
 import static com.cc.customer.loan.service.interfaceadapters.gateways.datastore.LoanGatewayImpl.LoanMapper.LOAN_MAPPER;
 
@@ -18,12 +17,11 @@ public class LoanGatewayImpl implements LoanGateway {
     }
 
     @Override
-    public Boolean saveLoan(Loan loan) {
-        var loanDocument = toLoanRepositoryDocument(loan);
-
-        var savedLoan = loanRepository.save(loanDocument);
-
-        return Objects.nonNull(savedLoan);
+    public Mono<Long> saveLoan(Loan loan) {
+        return Mono.just(loan)
+                .map(this::toLoanRepositoryDocument)
+                .flatMap(loanRepository::save)
+                .map(LoanDocument::getLoanNumber);
     }
 
     private LoanDocument toLoanRepositoryDocument(Loan loan) {

@@ -4,10 +4,10 @@ import com.cc.customer.loan.service.entities.enums.LoanStatus;
 import com.cc.customer.loan.service.entities.enums.LoanType;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Random;
 
 public abstract class Loan {
-    private final String loanNumber;
+    private Long loanNumber;
     private final String customerId;
     private final Integer period;
     private final Double rate;
@@ -20,7 +20,6 @@ public abstract class Loan {
 
     protected Loan(String customerId, LoanType loanType, Integer period, Double principle, Double initialDiscountAmount) {
         this.initialDiscountAmount = initialDiscountAmount;
-        this.loanNumber = generateLoanNumber();
         this.customerId = customerId;
         this.loanType = loanType;
         this.period = period;
@@ -48,8 +47,9 @@ public abstract class Loan {
         return LocalDate.now();
     }
 
-    private String generateLoanNumber() {
-        return UUID.randomUUID().toString();
+    private long generateLoanNumber() {
+        Random random = new Random();
+        return random.nextLong();
     }
 
     protected void activateLoan() {
@@ -73,7 +73,7 @@ public abstract class Loan {
         return principle;
     }
 
-    public String getLoanNumber() {
+    public Long getLoanNumber() {
         return loanNumber;
     }
 
@@ -95,5 +95,9 @@ public abstract class Loan {
 
     public Double getInitialDiscountAmount() {
         return initialDiscountAmount;
+    }
+
+    public void setLoanNumber(Long loanNumber) {
+        this.loanNumber = loanNumber;
     }
 }

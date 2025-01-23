@@ -1,6 +1,6 @@
 package com.cc.customer.loan.service.interfaceadapters.gateways.datastore;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface LoanRepository extends JpaRepository<LoanDocument, String> {
+public interface LoanRepository extends ReactiveCrudRepository<LoanDocument, String> {
 }
