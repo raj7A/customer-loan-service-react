@@ -1,5 +1,6 @@
 package com.cc.customer.loan.service.interfaceadapters.controllers;
 
+import com.cc.customer.loan.service.usecases.createloanusecase.CreateLoanUseCase;
 import com.cc.customer.loan.service.usecases.createloanusecase.CreateLoanUseCaseFactory;
 import com.cc.customer.loan.service.entities.Loan;
 import com.cc.customer.loan.service.usecases.createloanusecase.LoanRequest;
@@ -9,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import static com.cc.customer.loan.service.interfaceadapters.controllers.CustomerLoanController.LoanRequestResponseMapper.LOAN_REQUEST_MAPPER;
 import static com.cc.customer.loan.service.usecases.createloanusecase.CreateLoanUseCase.*;
@@ -24,14 +26,12 @@ public class CustomerLoanController {
     }
 
     @PostMapping("/loan")
-    public CreateLoanResponse createLoan(@RequestBody CreateLoanRequest createLoanRequest) {
-        var loanRequest = LOAN_REQUEST_MAPPER.loanCreateRequestToUseCaseLoanRequest(createLoanRequest);
-
-        var createLoanUseCase = createLoanUseCaseFactory.getCreateLoanUseCase(
-                useCaseProperties.newFlowEnabled() ? createLoanUseCaseImplV1 : createLoanUseCaseImpl);
-        var loan = createLoanUseCase.createLoan(loanRequest);
-
-        return LOAN_REQUEST_MAPPER.loanEntityToLoanResponse(loan);
+    public Mono<CreateLoanResponse> createLoan(@RequestBody CreateLoanRequest createLoanRequest) {
+        return Mono.just(createLoanRequest)
+                .map(request -> createLoanUseCaseFactory.getCreateLoanUseCase
+                        (useCaseProperties.newFlowEnabled() ? createLoanUseCaseImplV1 : createLoanUseCaseImpl))
+                .flatMap(createLoanUseCase -> createLoanUseCase.createLoan(LOAN_REQUEST_MAPPER.loanCreateRequestToUseCaseLoanRequest(createLoanRequest)))
+                .map(LOAN_REQUEST_MAPPER::loanEntityToLoanResponse);
     }
 
     @Mapper

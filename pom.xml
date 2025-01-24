@@ -79,6 +79,13 @@
             <version>0.23.1</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.projectreactor.tools/blockhound -->
+        <dependency>
+            <groupId>io.projectreactor.tools</groupId>
+            <artifactId>blockhound</artifactId>
+            <version>1.0.8.RELEASE</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

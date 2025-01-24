@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.HashMap;
 
@@ -46,8 +47,12 @@ public class CreateLoanUseCaseTest {
 
         var carLoan = createLoanUseCase.createLoan(loanRequest);
 
-        assertNotNull(carLoan);
-        assertInstanceOf(CarLoan.class, carLoan);
+        StepVerifier.create(carLoan)
+                .assertNext(loan -> {
+                    assertNotNull(loan);
+                    assertInstanceOf(CarLoan.class, loan);
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -58,8 +63,12 @@ public class CreateLoanUseCaseTest {
 
         var homeLoan = createLoanUseCase.createLoan(loanRequest);
 
-        assertNotNull(homeLoan);
-        assertInstanceOf(HomeLoan.class, homeLoan);
+        StepVerifier.create(homeLoan)
+                .assertNext(loan -> {
+                    assertNotNull(loan);
+                    assertInstanceOf(HomeLoan.class, loan);
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -67,16 +76,20 @@ public class CreateLoanUseCaseTest {
         var loanRequest = createLoanRequest(LoanType.CAR);
         Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.TRUE)));
 
-        assertThrows(CustomerFraudException.class, () -> createLoanUseCase.createLoan(loanRequest));
+        StepVerifier.create(createLoanUseCase.createLoan(loanRequest))
+                .expectError(CustomerFraudException.class)
+                .verify();
     }
 
     @Test
     public void Car_loan_is_not_created_when_loan_is_not_saved_in_data_store() {
         var loanRequest = createLoanRequest(LoanType.CAR);
         Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.FALSE)));
-        Mockito.when(loanGateway.saveLoan(any())).thenReturn(Mono.empty());
+        Mockito.when(loanGateway.saveLoan(any())).thenThrow(new LoanSaveException("Error occurred while saving the loan in data store"));
 
-        assertThrows(LoanSaveException.class, () -> createLoanUseCase.createLoan(loanRequest));
+        StepVerifier.create(createLoanUseCase.createLoan(loanRequest))
+                .expectError(LoanSaveException.class)
+                .verify();
     }
 
     private LoanRequest createLoanRequest(LoanType loanType) {

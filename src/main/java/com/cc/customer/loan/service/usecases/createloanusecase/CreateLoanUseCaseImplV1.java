@@ -4,6 +4,7 @@ import com.cc.customer.loan.service.entities.Loan;
 import com.cc.customer.loan.service.entities.LoanFactory;
 import com.cc.customer.loan.service.usecases.exceptions.CustomerFraudException;
 import com.cc.customer.loan.service.usecases.exceptions.LoanSaveException;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.logging.LogManager;
@@ -21,29 +22,9 @@ public class CreateLoanUseCaseImplV1 implements CreateLoanUseCase {
         this.loanGateway = loanGateway;
     }
 
+
     @Override
-    public Loan createLoan(LoanRequest loanRequest) {
-        doFraudCheck(loanRequest.customerId());
-        var loan = doCreateLoan(loanRequest);
-        saveLoan(loan);
-        return loan;
+    public Mono<Loan> createLoan(LoanRequest loanRequest) {
+        return null;
     }
-
-    private Loan doCreateLoan(LoanRequest loanRequest) {
-        return LoanFactory.createLoan(loanRequest.loanType(), loanRequest.customerId(), loanRequest.period(), loanRequest.principle(), loanRequest.initialDiscountAmount());
-    }
-
-    private void saveLoan(Loan loan) throws LoanSaveException {
-        var loanNumber = loanGateway.saveLoan(loan);
-        if (Objects.nonNull(loanNumber.block())) {
-            throw new LoanSaveException("Error occurred while saving the loan in data store");
-        } else {
-            loan.setLoanNumber(loanNumber.block());
-        }
-    }
-
-    private void doFraudCheck(String customerId) throws CustomerFraudException {
-        var fraudCheckResponse = customerFraudCheckGateway.doCustomerFraudCheck(customerId);
-    }
-
 }

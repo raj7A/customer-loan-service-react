@@ -5,27 +5,11 @@ server:
 spring:
   r2dbc:
     url: "r2dbc:h2:mem:///MyDb"
-#    driverClassName: "org.h2.Driver"
     username: "aaa"
     password: "ppp"
-#  datasource:
-#    url: "r2dbc:h2:mem:MyDb"
-#    driverClassName: "org.h2.Driver"
-#    username: "aaa"
-#    password: "ppp"
-#  sql:
-#    init:
-#      platform: "org.hibernate.dialect.H2Dialect"
   h2:
     console:
       enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql: false
 
 application:
   usecase:
