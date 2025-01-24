@@ -10,10 +10,10 @@
                 <pattern>
                     <pattern>
                         {
+                        "thread":"%thread",
                         "timestamp":"%date{ISO8601}",
                         "level":"%level",
                         "logger":"%logger",
-                        "thread":"%thread",
                         "msg":"%msg"
                         }
                     </pattern>

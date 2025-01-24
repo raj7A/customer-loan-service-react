@@ -1,4 +1,3 @@
-
 # Customer Loan service :
 Consider below is the business use case shared by a business team on which this sample application is built :
 1. Receive request to create a new Loan (car/home)
@@ -68,7 +67,9 @@ Development flow :
 
 # Note:
 This application is used for demo purpose, hence exhaustive test cases/exception handling etc are not covered in the applications.
+This follows the reactive approach implementation - https://projectreactor.io/docs/core/3.6.6/reference/index.html
 
 # References :
 https://www.oreilly.com/library/view/clean-architecture-a/9780134494272/
-https://www.youtube.com/watch?v=xF7aZJlfTSw
+https://projectreactor.io/docs/core/3.6.6/reference/index.html
+https://www.youtube.com/watch?v=xF7aZJlfTSw - for reactor logging
