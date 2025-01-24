@@ -48,6 +48,6 @@ public class HomeLoanTest {
     }
 
     private Loan createHomeLoan(double initialDiscountAmount) {
-        return LoanFactory.createLoan(LoanType.HOUSING,"123", 12, 1000000.00, initialDiscountAmount);
+        return LoanFactory.createLoan(LoanType.HOME,"123", 12, 1000000.00, initialDiscountAmount);
     }
 }

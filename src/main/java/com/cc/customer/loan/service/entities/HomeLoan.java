@@ -7,8 +7,7 @@ import java.time.LocalDate;
 public class HomeLoan extends Loan {
 
     protected HomeLoan(String customerId, Integer period, Double principle, Double initialDiscountAmount) {
-        super(customerId, LoanType.HOUSING, period, principle, initialDiscountAmount);
-        //ObjectUtils.isEmpty(getLoanNumber());
+        super(customerId, LoanType.HOME, period, principle, initialDiscountAmount);
     }
 
     @Override

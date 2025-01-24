@@ -1,7 +1,7 @@
 
 # Customer Loan service :
 Consider below is the business use case shared by a business team on which this sample application is built :
-1. Receive request to create a new Loan (car/housing)
+1. Receive request to create a new Loan (car/home)
 2. Check if customer is fraud or not
 3. if fraud, don't create a new loan, respond with error
 4. if not fraud, create a new Loan

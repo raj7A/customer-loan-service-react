@@ -1,6 +1,5 @@
 package com.cc.customer.loan.service.interfaceadapters.controllers;
 
-import com.cc.customer.loan.service.usecases.createloanusecase.CreateLoanUseCase;
 import com.cc.customer.loan.service.usecases.createloanusecase.CreateLoanUseCaseFactory;
 import com.cc.customer.loan.service.entities.Loan;
 import com.cc.customer.loan.service.usecases.createloanusecase.LoanRequest;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import static com.cc.customer.loan.service.interfaceadapters.controllers.CustomerLoanController.LoanRequestResponseMapper.LOAN_REQUEST_MAPPER;
-import static com.cc.customer.loan.service.usecases.createloanusecase.CreateLoanUseCase.*;
 
 @RestController
 public class CustomerLoanController {
@@ -28,8 +26,7 @@ public class CustomerLoanController {
     @PostMapping("/loan")
     public Mono<CreateLoanResponse> createLoan(@RequestBody CreateLoanRequest createLoanRequest) {
         return Mono.just(createLoanRequest)
-                .map(request -> createLoanUseCaseFactory.getCreateLoanUseCase
-                        (useCaseProperties.newFlowEnabled() ? createLoanUseCaseImplV1 : createLoanUseCaseImpl))
+                .map(request -> createLoanUseCaseFactory.getCreateLoanUseCase(request.loanType()))
                 .flatMap(createLoanUseCase -> createLoanUseCase.createLoan(LOAN_REQUEST_MAPPER.loanCreateRequestToUseCaseLoanRequest(createLoanRequest)))
                 .map(LOAN_REQUEST_MAPPER::loanEntityToLoanResponse);
     }

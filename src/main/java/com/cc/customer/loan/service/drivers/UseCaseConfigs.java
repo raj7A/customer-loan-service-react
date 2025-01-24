@@ -12,14 +12,14 @@ import static com.cc.customer.loan.service.drivers.UseCaseConfigs.ConfigMapper.C
 @Configuration
 public class UseCaseConfigs {
 
-    @Bean(value = CreateLoanUseCase.createLoanUseCaseImpl)
-    public CreateLoanUseCase createLoanUseCaseBean(CustomerFraudCheckGateway customerFraudCheckGateway, LoanGateway loanGateway, com.cc.customer.loan.service.usecases.properties.UseCaseProperties useCaseProperties) {
-        return new CreateLoanUseCaseImpl(customerFraudCheckGateway, loanGateway);
+    @Bean(value = CreateLoanUseCase.CAR)
+    public CreateLoanUseCase createCarLoanUseCase(LoanGateway loanGateway) {
+        return new CreateCarLoanUseCaseImpl(loanGateway);
     }
 
-    @Bean(value = CreateLoanUseCase.createLoanUseCaseImplV1)
-    public CreateLoanUseCase createLoanUseCaseV1(CustomerFraudCheckGateway customerFraudCheckGateway, LoanGateway loanGateway, com.cc.customer.loan.service.usecases.properties.UseCaseProperties useCaseProperties) {
-        return new CreateLoanUseCaseImplV1(customerFraudCheckGateway, loanGateway);
+    @Bean(value = CreateLoanUseCase.HOME)
+    public CreateLoanUseCase createHomeLoanUseCase(CustomerFraudCheckGateway customerFraudCheckGateway, LoanGateway loanGateway) {
+        return new CreateHomeLoanUseCaseImpl(customerFraudCheckGateway, loanGateway);
     }
 
     @Bean

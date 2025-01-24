@@ -11,7 +11,7 @@ public class LoanFactory {
 
     static {
         LOAN_TYPE_QUAD_FUNCTION_MAP.put(LoanType.CAR, CarLoan::new);
-        LOAN_TYPE_QUAD_FUNCTION_MAP.put(LoanType.HOUSING, HomeLoan::new);
+        LOAN_TYPE_QUAD_FUNCTION_MAP.put(LoanType.HOME, HomeLoan::new);
     }
 
     public static Loan createLoan(LoanType loanType, String customerId, Integer period, Double principle, Double initialDiscountAmount) {
