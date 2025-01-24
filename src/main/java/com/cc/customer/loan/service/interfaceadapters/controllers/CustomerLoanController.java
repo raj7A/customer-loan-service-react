@@ -7,9 +7,10 @@ import com.cc.customer.loan.service.usecases.properties.UseCaseProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import org.slf4j.MDC;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +28,7 @@ public class CustomerLoanController {
     }
 
     @PostMapping("/loan")
-    public Mono<CreateLoanResponse> createLoan(@RequestBody CreateLoanRequest createLoanRequest) {
+    public Mono<CreateLoanResponse> createLoan(@RequestBody CreateLoanRequest createLoanRequest, @RequestHeader HttpHeaders headers) {
         return Mono.just(createLoanRequest)
                 .doOnNext(request -> log.info("Received request to create loan: {}", request))
                 .map(request -> createLoanUseCaseFactory.getCreateLoanUseCase(request.loanType()))

@@ -1,20 +1,30 @@
 package com.cc.customer.loan.service.drivers;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.slf4j.MDC;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Map;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
 @Configuration
-@ConfigurationProperties(prefix = "application.interfaceadapters")
 public class InterfaceAdapterConfigs {
-	private Map<String, Map<String, String>> feature;
 
-	public Map<String, Map<String, String>> getFeature() {
-		return feature;
-	}
+    @Bean
+    public WebFilter filterFunction() {
+        return new filterFunction();
+    }
+}
 
-	public void setFeature(Map<String, Map<String, String>> feature) {
-		this.feature = feature;
-	}
+
+class filterFunction implements WebFilter {
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+        exchange.getRequest().getHeaders().get("TRACE_ID").stream()
+                .findFirst()
+                .ifPresent(traceId -> MDC.put("traceId", traceId));
+        return chain.filter(exchange);
+    }
 }

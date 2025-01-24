@@ -14,6 +14,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.UUID;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,6 +50,7 @@ public class CustomerLoanControllerTest {
                 webTestClient
                         .post()
                         .uri("/loan")
+                        .header("TRACE_ID", UUID.randomUUID().toString())
                         .bodyValue(createLoanRequest)
                         .exchange()
                         .expectStatus()
@@ -73,6 +76,7 @@ public class CustomerLoanControllerTest {
                 webTestClient
                         .post()
                         .uri("/loan")
+                        .header("TRACE_ID", UUID.randomUUID().toString())
                         .bodyValue(createLoanRequest)
                         .exchange()
                         .expectStatus()
@@ -97,6 +101,7 @@ public class CustomerLoanControllerTest {
         webTestClient
                 .post()
                 .uri("/loan")
+                .header("TRACE_ID", UUID.randomUUID().toString())
                 .bodyValue(createLoanRequest)
                 .exchange()
                 .expectStatus()
