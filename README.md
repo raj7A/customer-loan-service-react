@@ -59,17 +59,10 @@ Development flow :
 
 ![img.png](images/development_order.png)
 
-# AppMap :
-
-![](images/Dependency_Map.png)
-
-![](images/appMap.svg)
-
 # Note:
-This application is used for demo purpose, hence exhaustive test cases/exception handling etc are not covered in the applications.
-This follows the reactive approach implementation - https://projectreactor.io/docs/core/3.6.6/reference/index.html
+This follows the reactive based implementation (project reactor/ spring webflux) - https://projectreactor.io/docs/core/3.6.6/reference/index.html
 
 # References :
-https://www.oreilly.com/library/view/clean-architecture-a/9780134494272/
-https://projectreactor.io/docs/core/3.6.6/reference/index.html
-https://www.youtube.com/watch?v=xF7aZJlfTSw - for reactor logging
+1. https://www.oreilly.com/library/view/clean-architecture-a/9780134494272/
+2. https://projectreactor.io/docs/core/3.6.6/reference/index.html
+3. https://www.youtube.com/watch?v=xF7aZJlfTSw - for reactor logging
