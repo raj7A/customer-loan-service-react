@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 import static com.cc.customer.loan.service.interfaceadapters.gateways.datastore.LoanGatewayImpl.LoanMapper.LOAN_MAPPER;
 
 @Slf4j
@@ -29,6 +31,15 @@ public class LoanGatewayImpl implements LoanGateway {
                 .onErrorMap(throwable -> new LoanSaveException("Error occurred while saving the loan in data store"))
                 .map(LoanDocument::getLoanNumber)
                 .doOnNext(loanNumber -> log.info("Loan with id '{}' saved successfully in data store", loanNumber));
+    }
+
+    @Override
+    public Mono<Boolean> findByCustomerId(String customerId) {
+        return loanRepository.findByCustomerId(customerId)
+                .map(Objects::nonNull)
+                .doOnNext(loan -> log.info("Customer with id '{}' fetched the loan successfully from data store", customerId))
+                .switchIfEmpty(Mono.just(false))
+                .doOnNext(loan -> log.info("Customer with id '{}' does not have any loan in data store", customerId));
     }
 
     private LoanDocument toLoanRepositoryDocument(Loan loan) {

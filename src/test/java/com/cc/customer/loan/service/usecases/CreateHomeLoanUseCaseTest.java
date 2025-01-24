@@ -38,6 +38,7 @@ public class CreateHomeLoanUseCaseTest {
         var loanRequest = createLoanRequest(LoanType.CAR);
         Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.FALSE)));
         Mockito.when(loanGateway.saveLoan(any())).thenThrow(new LoanSaveException("Error occurred while saving the loan in data store"));
+        Mockito.when(loanGateway.findByCustomerId(any())).thenReturn(Mono.just(Boolean.FALSE));
 
         StepVerifier.create(createLoanUseCase.createLoan(loanRequest))
                 .expectError(LoanSaveException.class)
@@ -49,6 +50,7 @@ public class CreateHomeLoanUseCaseTest {
         var loanRequest = createLoanRequest(LoanType.HOME);
         Mockito.when(customerFraudCheckGateway.doCustomerFraudCheck(any())).thenReturn(Mono.just(new FraudCheckResponse("123", Boolean.FALSE)));
         Mockito.when(loanGateway.saveLoan(any())).thenReturn(Mono.just(1l));
+        Mockito.when(loanGateway.findByCustomerId(any())).thenReturn(Mono.just(Boolean.FALSE));
 
         var homeLoan = createLoanUseCase.createLoan(loanRequest);
 

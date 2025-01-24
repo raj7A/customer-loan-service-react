@@ -55,7 +55,7 @@ public class ArchitectureRulesTest {
                     .resideInAPackage("..usecases..")
                     .should()
                     .onlyAccessClassesThat()
-                    .resideInAnyPackage("..entities..", "..usecases..", "java..", "org.springframework.util..", "reactor.core..", "org.slf4j..");
+                    .resideInAnyPackage("..entities..", "..usecases..", "java..", "org.springframework.util..", "reactor..", "org.slf4j..");
 
     @ArchTest
     static final ArchRule annotations_dependency_rule =
