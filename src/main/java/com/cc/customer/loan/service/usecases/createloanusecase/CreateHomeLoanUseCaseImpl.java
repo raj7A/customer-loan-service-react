@@ -2,8 +2,10 @@ package com.cc.customer.loan.service.usecases.createloanusecase;
 
 import com.cc.customer.loan.service.entities.Loan;
 import com.cc.customer.loan.service.usecases.exceptions.CustomerFraudException;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 public class CreateHomeLoanUseCaseImpl extends CreateLoanUseCaseAbstract {
 
     private final CustomerFraudCheckGateway customerFraudCheckGateway;
@@ -15,21 +17,16 @@ public class CreateHomeLoanUseCaseImpl extends CreateLoanUseCaseAbstract {
 
     @Override
     public Mono<Loan> createLoan(LoanRequest loanRequest) {
-        return Mono.just(loanRequest)
-                .flatMap(request -> doFraudCheck(request.customerId()))
-                .filter(isFraud -> !isFraud)
-                .flatMap(isFraud -> doCreateLoan(loanRequest))
-                .flatMap(this::saveLoan);
-    }
-
-    private Mono<Boolean> doFraudCheck(String customerId) throws CustomerFraudException {
-        return customerFraudCheckGateway.doCustomerFraudCheck(customerId)
+        return customerFraudCheckGateway.doCustomerFraudCheck(loanRequest.customerId())
                 .flatMap(fraudCheckResponse -> {
                     if (fraudCheckResponse.isFraud()) {
-                        throw new CustomerFraudException("Customer failed the fraud check");
+                        log.error("Customer with id {} failed the fraud check", loanRequest.customerId());
+                        return Mono.error(new CustomerFraudException("Customer failed the fraud check"));
                     }
-                    return Mono.just(Boolean.FALSE);
-                });
+                    return Mono.just(fraudCheckResponse);
+                })
+                .flatMap(fraudCheckResponse -> doCreateLoan(loanRequest))
+                .flatMap(this::saveLoan);
     }
 
 }

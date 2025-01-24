@@ -2,10 +2,15 @@ package com.cc.customer.loan.service.entities;
 
 import com.cc.customer.loan.service.entities.enums.LoanStatus;
 import com.cc.customer.loan.service.entities.enums.LoanType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Random;
 
+@Getter
+@Setter
+@ToString
 public abstract class Loan {
     private Long loanNumber;
     private final String customerId;
@@ -47,57 +52,9 @@ public abstract class Loan {
         return LocalDate.now();
     }
 
-    private long generateLoanNumber() {
-        Random random = new Random();
-        return random.nextLong();
-    }
-
     protected void activateLoan() {
         loanStatus = LoanStatus.ACTIVE;
     }
+
     protected abstract Double getInterestRatePercentage();
-
-    public Double getOutStandingLoanAmount() {
-        return outStandingLoanAmount;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LoanStatus getLoanStatus() {
-        return loanStatus;
-    }
-
-    public Double getPrinciple() {
-        return principle;
-    }
-
-    public Long getLoanNumber() {
-        return loanNumber;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public Integer getPeriod() {
-        return period;
-    }
-
-    public Double getRate() {
-        return rate;
-    }
-
-    public LoanType getLoanType() {
-        return loanType;
-    }
-
-    public Double getInitialDiscountAmount() {
-        return initialDiscountAmount;
-    }
-
-    public void setLoanNumber(Long loanNumber) {
-        this.loanNumber = loanNumber;
-    }
 }

@@ -12,7 +12,7 @@ public class CreateCarLoanUseCaseImpl extends CreateLoanUseCaseAbstract {
     @Override
     public Mono<Loan> createLoan(LoanRequest loanRequest) {
         return Mono.just(loanRequest)
-                .flatMap(isFraud -> doCreateLoan(loanRequest))
+                .flatMap(this::doCreateLoan)
                 .flatMap(this::saveLoan);
     }
 }
