@@ -16,7 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.UUID;
 
-import static com.cc.customer.loan.service.drivers.InterfaceAdapterConfigs.TRACE_ID;
+import static com.cc.customer.loan.service.drivers.InterfaceAdapterControllerConfigs.TRACE_ID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

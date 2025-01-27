@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DataStoreGatewayConfigs {
+public class InterfaceAdapterGatewayDataStoreConfigs {
 
     @Bean
     public LoanGateway loanGatewayBean(LoanRepository loanRepository) {

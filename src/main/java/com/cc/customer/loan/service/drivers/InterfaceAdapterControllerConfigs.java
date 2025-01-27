@@ -10,7 +10,7 @@ import reactor.core.publisher.Hooks;
 import reactor.util.context.Context;
 
 @Configuration
-public class InterfaceAdapterConfigs {
+public class InterfaceAdapterControllerConfigs {
 
     public static final String TRACE_ID = "traceId";
 
