@@ -1,6 +1,9 @@
+# Note : 
+Please refer "multi-module-approach" branch for same code reference developed in maven multi module approach
+
 # Customer Loan service :
 Consider below is the business use case shared by a business team on which this sample application is built :
-1. Receive request to create a new Loan (car/home)
+1. Receive request to create a new Loan (car/housing)
 2. Check if customer is fraud or not
 3. if fraud, don't create a new loan, respond with error
 4. if not fraud, create a new Loan
@@ -22,10 +25,6 @@ Consider below is the business use case shared by a business team on which this 
 3. **_InterfaceAdapters_** - The place where implementation for database, http call , interfaces defined in UseCase resides
 4. **_Drivers_** - The place where all the independent components are stitched together to form an application (web)
 
-## Additional test layers :
-1. **_Functional-tests_** - The place where all high-level functional(business use cases) integration tests reside
-2. **_Integration-tests_** - The place where all technical (database/rest integration, retries, timeout etc.) integration tests reside
-
 ## Boundaries :
 
 ```text
@@ -33,11 +32,18 @@ Consider below is the business use case shared by a business team on which this 
     - Entities doesn't know anything about its outer circles  (i.e UseCases, InterfaceAdapters, configurations layer).
     - UseCases doesn't know anything about its outer circles  (i.e InterfaceAdapters, configurations layer), but knows about its inner circles (i.e Entities)
     - InterfaceAdapters doesn't know anything about its outer circles (i.e Drivers), but knows about its inner circles (i.e Entities, UseCases layer)
-    - Drivers doesn't know anything about Functional-test/Integration-test, but knows about its inner circles (i.e InterfaceAdapters, Entities, UseCases layer)
-    - Functional-tests know every layer
-    - Integration-tests know every layer
+    - Drivers knows about its inner circles (i.e InterfaceAdapters, Entities, UseCases layer)
 ```
-![img.png](images/Boundaries.png)
+
+## Test segregations :
+
+1. **_Entities_** - pure domain related tests - Restrict for unit tests (mock the dependencies if any) 
+2. **_UseCases_** - pure domain related tests - Restrict for unit tests (mock the dependencies if any)
+3. **_InterfaceAdapters_** -
+   1. high level business use case tests - Includes the integrated functional tests here
+   2. high level technical tests - Includes the tests of database/rest integration, retries, timeout etc.
+4. **_Drivers_** - A simple test to check if application comes up properly by stitching all the layers together
+
 
 # Why Clean Architecture :
 
@@ -46,7 +52,6 @@ Consider below is the business use case shared by a business team on which this 
     1. Separation of concerns of,
         1. business vs technical
         2. framework dependent vs framework in-dependent
-        3. unit tests vs integration tests vs functional tests
 3. **_Refactor friendly_** - Easy to refactor applications (consider scenarios of getting rid of frameworks like reactor/springboot, and this can be done without affecting the domain layers )
 4. **_Independent of external interactions_** - Changes in the external http contract or database doesn't affect the Entities & UseCases (unless its required to update the domain with business logics)
 5. **_Evolving architecture_** -
@@ -59,10 +64,16 @@ Development flow :
 
 ![img.png](images/development_order.png)
 
-# Note:
+# AppMap :
+
+![](images/Dependency_Map.png)
+
+![](images/appMap.svg)
+
+Note:
 This follows the reactive based implementation (project reactor/ spring webflux) - https://projectreactor.io/docs/core/3.6.6/reference/index.html
 
-# References :
-1. https://www.oreilly.com/library/view/clean-architecture-a/9780134494272/
-2. https://projectreactor.io/docs/core/3.6.6/reference/index.html
-3. https://www.youtube.com/watch?v=xF7aZJlfTSw - for reactor logging
+References :
+https://www.oreilly.com/library/view/clean-architecture-a/9780134494272/
+https://projectreactor.io/docs/core/3.6.6/reference/index.html
+https://www.youtube.com/watch?v=xF7aZJlfTSw - for reactor logging
