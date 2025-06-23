@@ -1,6 +1,3 @@
-# Note : 
-Please refer "multi-module-approach" branch for same code reference developed in maven multi module approach
-
 # Customer Loan service :
 Consider below is the business use case shared by a business team on which this sample application is built :
 1. Receive request to create a new Loan (car/housing)
@@ -10,7 +7,7 @@ Consider below is the business use case shared by a business team on which this 
 5. Save the loan to DataStore
 6. Respond with Loan information
 
-# Clean Architecture :
+# Clean Architecture (overlaps with Hexagonal architecture principles) :
 
 ![](images/Clean_Architecture.png)
 
